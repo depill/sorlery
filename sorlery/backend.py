@@ -41,7 +41,7 @@ class QueuedThumbnailBackend(ThumbnailBackend):
         # clear the corresponding row from the kvstore to have thumbnail rebuilt.
         job = create_thumbnail.delay(file_, geometry_string, options, name)
         if job:
-            geometry = parse_geometry(geometry_string)
+            geometry = (0, 0)
             # We can't add a source row to the kvstore without the size
             # information being looked up, so add dummy information here
             # We'll need to correct this information when we generate the thumbnail
@@ -63,5 +63,4 @@ class QueuedThumbnailBackend(ThumbnailBackend):
             default.kvstore._set_raw(add_prefix(thumbnail.key), serialize(rawvaluearr))
 
         thumbnail.name = file_.name
-        thumbnail.from_sorlery = True
         return thumbnail
