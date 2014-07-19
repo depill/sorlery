@@ -1,6 +1,5 @@
 from sorl.thumbnail.conf import settings, defaults as default_settings
-from sorl.thumbnail.helpers import tokey, serialize
-from sorl.thumbnail.images import DummyImageFile, ImageFile
+from sorl.thumbnail.images import ImageFile
 from sorl.thumbnail.kvstores.base import add_prefix
 from sorl.thumbnail.helpers import serialize, deserialize
 from sorl.thumbnail import default

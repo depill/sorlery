@@ -1,9 +1,9 @@
-from celery import task
+from celery import shared_task
 from sorl.thumbnail import default
 from sorl.thumbnail.images import ImageFile
 
 
-@task
+@shared_task
 def create_thumbnail(file_, geometry_string, options, name):
     thumbnail = ImageFile(name, default.storage)
 
