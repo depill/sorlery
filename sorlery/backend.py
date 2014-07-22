@@ -1,9 +1,9 @@
+from django.utils import six
 from sorl.thumbnail.conf import settings, defaults as default_settings
 from sorl.thumbnail.images import ImageFile
 from sorl.thumbnail.kvstores.base import add_prefix
 from sorl.thumbnail.helpers import serialize, deserialize
 from sorl.thumbnail import default
-from sorl.thumbnail.parsers import parse_geometry
 from sorl.thumbnail.base import ThumbnailBackend
 
 from sorlery.tasks import create_thumbnail
@@ -40,6 +40,10 @@ class QueuedThumbnailBackend(ThumbnailBackend):
         # Note: If the thumbnail file has been deleted, you will need to manually
         # clear the corresponding row from the kvstore to have thumbnail rebuilt.
         job = create_thumbnail.delay(file_, geometry_string, options, name)
+        if isinstance(file_, six.string_types):
+            filename = file_.split('/')[-1]
+        else:
+            filename = file_.name
         if job:
             geometry = (0, 0)
             # We can't add a source row to the kvstore without the size
@@ -59,8 +63,8 @@ class QueuedThumbnailBackend(ThumbnailBackend):
             # don't make it easy to.
             rawvalue = default.kvstore._get_raw(add_prefix(thumbnail.key))
             rawvaluearr = deserialize(rawvalue)
-            rawvaluearr['name'] = file_.name
+            rawvaluearr['name'] = filename
             default.kvstore._set_raw(add_prefix(thumbnail.key), serialize(rawvaluearr))
 
-        thumbnail.name = file_.name
+        thumbnail.name = filename
         return thumbnail
