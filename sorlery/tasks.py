@@ -4,10 +4,10 @@ from sorl.thumbnail.images import ImageFile
 
 
 @shared_task
-def create_thumbnail(file_, geometry_string, options, name):
+def create_thumbnail(file_, geometry_string, options, name, force=False):
     thumbnail = ImageFile(name, default.storage)
 
-    if thumbnail.exists():
+    if thumbnail.exists() and not force:
         return
 
     if file_:
