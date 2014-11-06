@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='sorlery',
-    version='1.3',
+    version='1.3.1',
     description="",
     author="Aidan Lister",
     author_email='aidan@aidanlister.com',

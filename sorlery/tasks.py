@@ -22,7 +22,10 @@ def create_thumbnail(file_, geometry_string, options, name):
         options['image_info'] = {}
     size = default.engine.get_image_size(source_image)
     source.set_size(size)
+
     default.backend._create_thumbnail(source_image, geometry_string, options, thumbnail)
+    if hasattr(default.backend, '_create_alternative_resolutions'):
+        default.backend._create_alternative_resolutions(source_image, geometry_string, options, thumbnail.name)
 
     # Need to update both the source and the thumbnail with correct sizing
     default.kvstore.set(source)
